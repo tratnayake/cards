@@ -19,6 +19,7 @@ func newDeck() deck {
 	cardSuits := []string{"Spades", "Diamonds", "Hearts", "Clubs"}
 	cardValues := []string{"Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"}
 
+	// _ is the index value which isn't necessary, so since we're discarding it's use. Use a "_"
 	for _, suit := range cardSuits {
 		for _, value := range cardValues {
 			cards = append(cards, value+" of "+suit)
@@ -30,15 +31,20 @@ func newDeck() deck {
 
 func (d deck) print() {
 	for i, card := range d {
+		//In this case, we *are* interested in the index value, hence leaving it in.
 		fmt.Println(i, card)
 	}
 }
 
+//This function takes in two values, returns two decks.
 func deal(d deck, handSize int) (deck, deck) {
+	//Return value 1 is a subset of deck starting at 0, ending at handsize
+	//Return value 2 is subset of deck starting at handSize to end.
 	return d[:handSize], d[handSize:]
 }
 
 func (d deck) toString() string {
+	//Concatenate strings, seperate with ","
 	return strings.Join([]string(d), ",")
 }
 
@@ -69,11 +75,16 @@ func newDeckFromFile(filename string) deck {
 // }
 
 func (d deck) shuffle() {
+	//Pick a randomized source, this time being the time.
 	source := rand.NewSource(time.Now().UnixNano())
+	//r is now the randomizer.
 	r := rand.New(source)
 
+	//For each card in the deck.
 	for i := range d {
+		//pick a random Integer between 0 and length of deck - 1.
 		newPosition := r.Intn(len(d) - 1)
+		//Switch current position of i with random card
 		d[i], d[newPosition] = d[newPosition], d[i]
 	}
 }
